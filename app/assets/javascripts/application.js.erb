@@ -1,0 +1,291 @@
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
+// vendor/assets/javascripts directory can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file. JavaScript code in this file should be added after the last require_* statement.
+//
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+//= require rails-ujs
+//= require jquery
+//= require jquery-ui/widgets/datepicker
+//= require bootstrap-sprockets
+//= require qtip2-jquery-rails
+//= require_tree .
+
+
+jQuery(function($) {
+    'use strict';
+    $(window).on('load', function () {
+        $('#page-loader').fadeOut(500);
+    });
+    /*============================================
+	Navigation Functions
+     ==============================================*/
+    //mean menu
+    $(document).ready(function () {
+        $('#main-navigation nav').meanmenu({
+            meanScreenWidth: "991"
+        });
+    });
+    //menu resizing on hover
+    if ($(window).scrollTop()< ($(window).height()-600)){
+        $('#main-navigation').removeClass('scrolled');
+        $('.main-logo img').attr('src','<%= image_path("steemcreate-header.png") %>');
+    }
+    else{
+        $('#main-navigation').addClass('scrolled'); 
+        $('.main-logo img').attr('src','<%= image_path("steemcreate-header.png") %>');
+    }
+
+    $(window).on('scroll', function () {
+        if ($(window).scrollTop()< ($(window).height()-600)){
+            $('#main-navigation').removeClass('scrolled');
+            $('.main-logo img').attr('src','<%= image_path("steemcreate-header.png") %>');
+        }
+        else{
+            $('#main-navigation').addClass('scrolled'); 
+            $('.main-logo img').attr('src','<%= image_path("steemcreate-header.png") %>');
+        }
+    });
+});
+
+$(document).ready(function(){
+    new Clipboard('.clippy');
+
+    if (window.location.pathname === '/') {
+        getRecentPosts();
+
+        $('#username').on('input',function(e){
+            validateSteemName($(this).val());
+        });
+
+        $('#checkoutButton').on('click', function(e){
+            e.preventDefault();
+            $('#signupModal').modal('hide');
+        });
+
+        $('#steemTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Steem</strong>",
+                text: "<strong>STEEM</strong> is the standard cryptocurrency  for Steem and is tradable on various exchanges. Its value can fluctuate just like any other coin.",
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#sbdTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Steem Dollars (SBD)</strong>",
+                text: "<strong>Steem Dollars</strong> are a currency which is pegged to the US Dollar. They can be converted into <strong>STEEM Power</strong> (powering up), or into <strong>STEEM</strong> (easily tradable on various exchanges)."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#steemPowerTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Steem Power (VESTS)</strong>",
+                text: "<strong>Steem Power</strong> is vested STEEM. Powering down <strong>Steem Power (VESTS)</strong> takes 3 months, and is paid out as 13 equal weekly payments."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#whatAreTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>What Are Steem Tokens</strong>",
+                text: "<strong>STEEM, Steem Dollars, and Steem Power</strong> - The three cryptocurrencies that make up the Steem economy. Authors are paid in Steem Power or Steem Dollars. Curators are paid in Steem Power."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#howAreTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>How Are Users Paid</strong>",
+                text: "Users are paid when they <strong>write posts or curate (vote)</strong> on other user's posts. Steem has a thriving economy that has created many different avenues for income through the Steem network."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#whatMakesTip').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>What Makes Steem Secure</strong>",
+                text: "<strong>Steem Witnesses</strong> are possibly the most important part of the Steem network because they keep the network secure, stable, and operating as intended. Witnesses are rewarded for their efforts through <strong>producer rewards</strong>."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+    } else if (window.location.pathname === '/receipt') {
+        checkReceiptPage();
+        $('#password').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Master Password</strong>",
+                text: "All of your account's keys are derived from this <strong>Master Password</strong>. Keep this key secure <strong>at all times</strong> and never expose it to the internet."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#owner_key').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Owner Private Key</strong>",
+                text: "Your Owner Private key is used to perform an account reset if you lose your <strong>Master Password</strong>. Keep this key as secure as possible!"
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#active_key').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Active Private Key</strong>",
+                text: "Your <strong>Active Key</strong> is used when you need to make an account update, send a transfer, or make trades on the Steem market."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#posting_key').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Posting Private Key</strong>",
+                text: "Your <strong>Posting Key</strong> is what you use to log into Steem when you are voting, posting, or resteeming articles. You will not be able to perform sensitive actions with this key."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+        $('#memo_key').qtip({
+            content: {
+                prerender: true,
+                title: "<strong>Memo Private Key</strong>",
+                text: "Your <strong>Memo Key</strong> is used when you need to attach extra information to a transfer, or when you are sending or receiving encrypted messages on Steem."
+            },
+            style: {
+                classes: 'qtip-blue qtip-shadow qtip-bootstrap'
+            }
+        });
+    }
+});
+
+
+function getRecentPosts() {
+    steem.api.getDiscussionsByBlogAsync({limit: 15, tag: 'steemitblog'}).then((content) => {
+        recentPosts = [];
+        for(i=0;(i<content.length && recentPosts.length < 4);i++) {
+            content[i].author === 'steemitblog' ? recentPosts.push(content[i]) : null;
+        }
+        return recentPosts;
+    }).then((recentPosts) => {
+        var html = '<div id="testimonials-carousel">';
+        $.each(recentPosts, function(index, post){
+            var created = $.datepicker.formatDate('MM dd, yy', new Date(post.created));
+            var tagsRegex = /(<([^>]+)>)/ig;
+            html += '<div class="item"><figure class="testimonial-card"><blockquote class="card-1"><a target="_blank" href="//steemit.com' + post.url + '">' + post.title + '</a><br/><div id="summaryText" style="color:dimgrey;font-weight:400;">' + post.body.replace(tagsRegex , "").substring(0,500) + '...<p><a target="_blank" href="//steemit.com' + post.url + '">Continue reading on SteemIt</a></p></div></blockquote><div class="pull-right">' + created + '</div></figure></div>';
+        })
+        $('#recentPosts').html(html);
+    });
+};
+
+function validateSteemName(username) {
+    if(username == '') {
+        $('#checkoutButton').hide();
+        $('#usernameSuccess').text('');
+        $('#usernameError').text('');
+    } else if ((username.length >= 3) && (username.length <= 16)) {
+        steem.api.getAccounts([username]).then((content) => {
+            if(content[0]) {
+                $('#checkoutButton').hide();
+                $('#usernameSuccess').text('');
+                $('#usernameError').text("Account " + content[0].name + " is already taken.");
+            } else {
+                if ('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('').indexOf(username.match(/.$/)[0]) < 0) {
+                    $('#checkoutButton').hide();
+                    $('#usernameSuccess').text('');
+                    $('#usernameError').text('Username must end with a letter or a digit.');
+                } else if (username.match(/[A-Z]{1,}/)) {
+                    $('#checkoutButton').hide();
+                    $('#usernameSuccess').text('');
+                    $('#usernameError').text('Username must be all lowercase.');
+                } else if (username.match(/(\s|\.)\w{0,2}(\.(\w{0,2}(\.|$)){0,}|$)/)) {
+                    $('#checkoutButton').hide();
+                    $('#usernameSuccess').text('');
+                    $('#usernameError').text('Username segments must be at least 3 characters long.');
+                } else {
+                    $('#checkoutButton').show();
+                    $('#usernameSuccess').text("Account " + username + " is available.");
+                    $('#usernameError').text('');
+                }
+            }
+        });
+    } else if (username.length > 16) {
+        $('#checkoutButton').hide();
+        $('#usernameSuccess').text('');
+        $('#usernameError').text('Username must be at most 16 characters long.');
+    } else {
+        $('#checkoutButton').hide();
+        $('#usernameSuccess').text('');
+        $('#usernameError').text('Username must be at least 3 characters long.');
+    }
+}
+
+function checkReceiptPage() {
+    const cookies = require('cookies-js');
+    const steemcreateCookie = cookies.get('steemcreate-info');
+    if ((window.location.pathname === '/receipt') && steemcreateCookie) {
+        const orderPaid = steemcreateCookie.split(',')[0].split('+')[1];
+        const created = steemcreateCookie.split(',')[1].split('+')[1];
+        if (orderPaid && username !== undefined && created === '0') {
+            const username = steemcreateCookie.split(',')[2].split('+')[1];
+            const crypto = require('crypto');
+            const dsteem = require('dsteem');
+            const client = new dsteem.Client("<%= Settings.steemd_url || 'https://steemd.steemit.com' %>");
+            const creatorKey = dsteem.PrivateKey.fromString('<%= Settings.steem_active_key %>');
+            const password = 'P5' + crypto.randomBytes(20).toString('hex');
+            client.broadcast.createAccount({username, password, creator: '<%= Settings.creator_account %>', fee: '6.000 STEEM'}, creatorKey).then(function(result) {
+                $('#username').val(username);
+                $('#password').val(password);
+                const auths = steem.auth.getPrivateKeys(username, password, ['owner','active','posting','memo']);
+                $('#owner_key').val(auths.owner);
+                $('#active_key').val(auths.active);
+                $('#posting_key').val(auths.posting);
+                $('#memo_key').val(auths.memo);
+                cookieValue = 'a-1,b-1,c-' + username + ',d-' + password;
+                cookies.set('steemcreate-info', cookieValue);
+            }, function(error) {
+                $('#username').val(username);
+                $('#password').val('Something went wrong. Please refresh the page to try again or contact support@steemcreate.com');
+                cookieValue = 'a-1,b-0,c-' + username;
+                cookies.set('steemcreate-info', cookieValue);
+            });
+        } else if (orderPaid && username !== undefined && created === '1') {
+            const username = steemcreateCookie.split(',')[2].split('+')[1];
+            const password = steemcreateCookie.split(',')[3].split('+')[1];
+            const auths = steem.auth.getPrivateKeys(username, password, ['owner','active','posting','memo']);
+            $('#username').val(username);
+            $('#password').val(password);
+            $('#owner_key').val(auths.owner);
+            $('#active_key').val(auths.active);
+            $('#posting_key').val(auths.posting);
+            $('#memo_key').val(auths.memo);
+        }
+    } else if (window.location.pathname === '/receipt') {
+        window.location.href = '/';
+    }
+}

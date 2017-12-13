@@ -1,0 +1,5 @@
+steemd_url: https://steemd.steemit.com
+creator_account: username
+steem_active_key: active_private_key
+stripe_secret_key: sk_test_key
+stripe_publishable_key: pk_test_key

@@ -1,0 +1,168 @@
+<header>
+	<div id="main-navigation">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 no-padding">
+					<div class="main-logo">
+						<%= image_tag('steemcreate-logo.png', class: 'img-responsive', alt: 'logo') %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<section id="main-banner" class="secondary-overlay">
+	<div class="container text-center banner-info-receipt">
+		<h1 class="heading-alt" style="font-size: 4em;">Steem Account Information</h1>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-xs-2">
+					<%= label_tag :username %>
+				</div>
+				<div class="col-xs-10" style="padding-right:2em;">
+					<%= text_field_tag :username, nil, readonly: true, placeholder: 'Username', class: 'form-control' %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-2">
+					<%= label_tag :password %>
+				</div>
+				<div class="col-xs-10" style="padding-right:2em;">
+					<div class="input-group">
+						<%= text_field_tag :password, nil, readonly: true, placeholder: 'Master Password', class: 'form-control' %>
+						<span class="input-group-addon" id="basic-addon1">
+							<button class="clippy" style="background-color: transparent;" data-clipboard-target='#password'>Copy</button>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<h3>Account Keys</h3>
+				<p><em>back these up and keep them private</em></p>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+					<div class="col-xs-2">
+						<%= label_tag :owner %>
+					</div>
+					<div class="col-xs-10">
+						<div class="input-group">
+							<%= text_field_tag :owner_key, nil, readonly: true, placeholder: 'Owner Private Key', class: 'form-control' %>
+							<span class="input-group-addon" id="basic-addon1">
+								<button class="clippy" style="background-color: transparent;" data-clipboard-target='#owner_key'>Copy</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<div class="col-xs-2">
+						<%= label_tag :active %>
+					</div>
+					<div class="col-xs-10">
+						<div class="input-group">
+							<%= text_field_tag :active_key, nil, readonly: true, placeholder: 'Active Private Key', class: 'form-control' %>
+							<span class="input-group-addon" id="basic-addon1">
+								<button class="clippy" style="background-color: transparent;" data-clipboard-target='#active_key'>Copy</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+					<div class="col-xs-2">
+						<%= label_tag :posting %>
+					</div>
+					<div class="col-xs-10">
+						<div class="input-group">
+							<%= text_field_tag :posting_key, nil, readonly: true, placeholder: 'Posting Private Key', class: 'form-control' %>
+							<span class="input-group-addon" id="basic-addon1">
+								<button class="clippy" style="background-color: transparent;" data-clipboard-target='#posting_key'>Copy</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<div class="col-xs-2">
+						<%= label_tag :memo %>
+					</div>
+					<div class="col-xs-10">
+						<div class="input-group">
+							<%= text_field_tag :memo_key, nil, readonly: true, placeholder: 'Memo Private Key', class: 'form-control' %>
+							<span class="input-group-addon" id="basic-addon1">
+								<button class="clippy" style="background-color: transparent;" data-clipboard-target='#memo_key'>Copy</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="deleteCookie" style="padding-top: 30px;">
+				<button class="btn btn-danger" onClick="eraseCookie('steemcreate-info');">Delete Info (Make a Backup!)</button>
+			</div>
+		</div>
+	</div>
+</section>
+<section id="promotional" class="ptb-40 primary-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2 class="heading-alt">Important Information</h2>
+					<li>- Backup your account keys and password to a secure location</li>
+					<li>- Ensure that you are able to log into your account with your saved keys</li>
+					<li>- Only login with your <strong>Posting Private Key</strong> when not needing to transfer funds</li>
+					<li>- Use your <strong>Active Private Key</strong> when you need to perform sensitive operations</li>
+					<li>- Never expose your <strong>Owner Private Key</strong> to the internet; it can be used to change account ownership</li>
+					<li>- If you fail to backup your keys and lose your password, contact <strong><a href="mailto:support@steemcreate.com">SteemCreate</a></strong> for assistance</li>
+			</div>
+		</div>
+	</div>
+</section>
+<footer id="footer" class="secondary-bg dark-footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 ptb-20 text-center">
+				<p>Copyright &COPY; SteemLiberator, Inc - <%= Date.today.year == 2017 ? '2017' : "2017 - #{Date.today.year}" %></p>
+				<p class="policy">This site does not collect any personal information other than to the extent that is necessary to carry out normal operations. Collected personal information will not be sold or distributed.<br/>All sales are final.</p>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script>
+	function createCookie(name,value,days) {
+	    var expires = "";
+	    if (days) {
+	        var date = new Date();
+	        date.setTime(date.getTime() + (days*24*60*60*1000));
+	        expires = "; expires=" + date.toUTCString();
+	    }
+	    document.cookie = name + "=" + value + expires + "; path=/";
+	}
+	function eraseCookie(name) {
+	    createCookie(name,"",-1);
+	    window.location.href = '/';
+	}
+</script>
+
+<% if cookies['steemcreate-info'] %>
+	<script>
+	  fbq('track', 'Purchase', {
+	    value: 15.00,
+	    currency: 'USD',
+	  });
+	</script>
+	<script>
+	window.dataLayer = window.dataLayer || []
+	dataLayer.push({
+	   'transactionId': new Date().toUTCString(),
+	   'transactionTotal': 15.00,
+	   'transactionProducts': [{
+	       'sku': 'SC01',
+	       'name': 'Steem Account',
+	       'category': 'digital',
+	       'price': 15.00,
+	       'quantity': 1
+	   }]
+	});
+	</script>
+<% end %>

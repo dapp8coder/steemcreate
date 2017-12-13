@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  username: MyString
+  ip: MyString
+  paid: false
+  created: false
+
+two:
+  username: MyString
+  ip: MyString
+  paid: false
+  created: false

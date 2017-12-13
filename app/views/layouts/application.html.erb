@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SteemCreate</title>
+    <%= csrf_meta_tags %>
+
+    <meta property="og:title" content="SteemCreate" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.steemcreate.com/" />
+    <meta property="og:image" content="<%= asset_url('steemcreate-logo.png') %>" />
+    <meta property="og:description" content="SteemCreate enables you to create a Steem account with a Credit Card." />
+    <meta property="og:locale" content="en_US" />
+
+
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Poppins:400,300,500,600,700' rel='stylesheet' type='text/css'>
+    <%= javascript_include_tag 'application' %>
+    <script src="//js.stripe.com/v3/"></script>
+    <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110537500-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-110537500-1');
+    </script>
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '384561085315875');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=384561085315875&ev=PageView&noscript=1"
+    /></noscript>
+    <script>
+    var i=new Image();i.src="https://alb.reddit.com/snoo.gif?q=CAAHAAABAAoACQAAAAABcqCXAA==&s=KJZmCE4EvwctbMRJxj1tR1GXyKje3pIDc852tQJ80cc=";
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://alb.reddit.com/snoo.gif?q=CAAHAAABAAoACQAAAAABcqCXAA==&s=KJZmCE4EvwctbMRJxj1tR1GXyKje3pIDc852tQJ80cc="/>
+    </noscript>
+  </head>
+
+  <body>
+    <div id="page-loader" class="primary-bg">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <%= yield %>
+  </body>
+</html>

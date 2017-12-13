@@ -1,0 +1,23 @@
+{
+  "name": "steemcreate",
+  "private": true,
+  "dependencies": {
+    "browserify": "^14.5.0",
+    "browserify-incremental": "^3.1.1",
+    "cookies-js": "^1.2.3",
+    "dsteem": "^0.8.5",
+    "steem": "^0.6.7"
+  },
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

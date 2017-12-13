@@ -1,0 +1,80 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require color01
+ *= require countdown-responsive
+ *= require styles
+ *= require jquery.meanmenu	
+ *= require jquery-ui/datepicker
+ *= require qtip2-jquery-rails
+ *= require_tree ./stroke-gap-icons
+ *= require_self
+ */
+
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import "font-awesome";
+@import "glyphicons";
+
+.subtext {
+	font-size: 10px;
+}
+
+.white {
+	color: #fff;
+}
+
+hr {
+  height: 1px;
+}
+
+.card-1 {
+	text-align: center;
+	font-weight: 700;
+	&a, & a:hover, & a:active, & a:visited, & a:link {
+		font-size: 18px;
+		font-color: #333;
+	}
+}
+
+a:hover, a:visited {
+	text-decoration: none;
+}
+
+#usernameError {
+	color: red;
+}
+
+#usernameSuccess {
+	color: blue;
+}
+
+.logoblue {
+	color: #108fcf !important;
+}
+
+.logoblue-bak {
+	color: #fff !important;
+	background-color: #108fcf !important;
+}
+
+.modal-header {
+	background-color: #108fcf !important;
+}
+
+.row {
+	padding-bottom: 10px;
+}
+
+.main-logo {
+	display: inline-flex;
+}
