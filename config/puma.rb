@@ -4,7 +4,7 @@ workers 1
 # Min and Max threads per worker
 threads 1, 6
 
-directory "/home/ubuntu/creator"
+directory "/home/ubuntu/steemcreate"
 
 app_dir = File.expand_path("../..", __FILE__)
 shared_dir = "#{app_dir}/shared"
