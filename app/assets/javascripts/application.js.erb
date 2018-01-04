@@ -219,6 +219,10 @@ function validateSteemName(username) {
                     $('#checkoutButton').hide();
                     $('#usernameSuccess').text('');
                     $('#usernameError').text('Username must end with a letter or a digit.');
+                } else if ('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').indexOf(username.match(/^./)[0]) < 0) {
+                    $('#checkoutButton').hide();
+                    $('#usernameSuccess').text('');
+                    $('#usernameError').text('Username must start with a letter.');
                 } else if (username.match(/[A-Z]{1,}/)) {
                     $('#checkoutButton').hide();
                     $('#usernameSuccess').text('');
