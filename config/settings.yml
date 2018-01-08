@@ -1,4 +1,4 @@
-steemd_url: https://steemd.steemit.com
+steemd_url: https://api.steemit.com
 creator_account: username
 steem_active_key: active_private_key
 stripe_secret_key: sk_test_key

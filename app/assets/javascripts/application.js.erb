@@ -61,7 +61,7 @@ $(document).ready(function(){
         getRecentPosts();
 
         $('#username').on('input',function(e){
-            validateSteemName($(this).val());
+            validateSteemName(e.target.value);
         });
 
         $('#checkoutButton').on('click', function(e){
@@ -209,7 +209,8 @@ function validateSteemName(username) {
         $('#usernameSuccess').text('');
         $('#usernameError').text('');
     } else if ((username.length >= 3) && (username.length <= 16)) {
-        steem.api.getAccounts([username]).then((content) => {
+        steem.api.setOptions({url: 'https://api.steemit.com'});
+        steem.api.getAccountsAsync([username]).then((content) => {
             if(content[0]) {
                 $('#checkoutButton').hide();
                 $('#usernameSuccess').text('');
@@ -235,6 +236,10 @@ function validateSteemName(username) {
                     $('#checkoutButton').hide();
                     $('#usernameSuccess').text('');
                     $('#usernameError').text('Username segments must be at least 3 characters long.');
+                } else if (username.match(/[!@#$%^&*()_+=\[\]{};':"\\|,<>\/?]{1,}/)) {
+                    $('#checkoutButton').hide();
+                    $('#usernameSuccess').text('');
+                    $('#usernameError').text('Username can only contain letters, numbers, dashes, or periods.');
                 } else {
                     $('#checkoutButton').show();
                     $('#usernameSuccess').text("Account " + username + " is available.");
@@ -263,7 +268,7 @@ function checkReceiptPage() {
             const username = steemcreateCookie.split(',')[2].split('+')[1];
             const crypto = require('crypto');
             const dsteem = require('dsteem');
-            const client = new dsteem.Client("<%= Settings.steemd_url || 'https://steemd.steemit.com' %>");
+            const client = new dsteem.Client("<%= Settings.steemd_url || 'https://api.steemit.com' %>");
             const creatorKey = dsteem.PrivateKey.fromString('<%= Settings.steem_active_key %>');
             const password = 'P5' + crypto.randomBytes(20).toString('hex');
             client.broadcast.createAccount({username, password, creator: '<%= Settings.creator_account %>', fee: '6.000 STEEM'}, creatorKey).then(function(result) {
