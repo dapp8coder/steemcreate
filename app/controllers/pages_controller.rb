@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     return unless token && params[:username]
 
     charge = Stripe::Charge.create(
-      :amount => 4500,
+      :amount => 2000,
       :currency => "usd",
       :description => "Steem Account",
       :source => token,
