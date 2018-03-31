@@ -269,24 +269,60 @@ function checkReceiptPage() {
             const crypto = require('crypto');
             const dsteem = require('dsteem');
             const client = new dsteem.Client("https://api.steemit.com");
-            const creatorKey = dsteem.PrivateKey.fromString('<%= Settings.steem_active_key %>');
+            const creatorKey = "<%= Settings.steem_active_key %>";
             const password = 'P5' + crypto.randomBytes(20).toString('hex');
-            client.broadcast.createAccount({username, password, creator: '<%= Settings.creator_account %>', fee: '3.000 STEEM'}, creatorKey).then(function(result) {
-                $('#username').val(username);
-                $('#password').val(password);
-                const auths = steem.auth.getPrivateKeys(username, password, ['owner','active','posting','memo']);
-                $('#owner_key').val(auths.owner);
-                $('#active_key').val(auths.active);
-                $('#posting_key').val(auths.posting);
-                $('#memo_key').val(auths.memo);
-                cookieValue = 'a-1,b-1,c-' + username + ',d-' + password;
-                cookies.set('steemcreate-info', cookieValue);
-            }, function(error) {
-                $('#username').val(username);
-                $('#password').val('Something went wrong. Please refresh the page to try again or contact support@steemcreate.com');
-                cookieValue = 'a-1,b-0,c-' + username;
-                cookies.set('steemcreate-info', cookieValue);
+            const publicKeys = steem.auth.generateKeys(username, password, ['posting', 'owner', 'active', 'memo']);
+            const owner = {
+                weight_threshold: 1,
+                account_auths: [],
+                key_auths: [[publicKeys.owner, 1]]
+            };
+            const active = {
+                weight_threshold: 1,
+                account_auths: [],
+                key_auths: [[publicKeys.active, 1]]
+            };
+            const posting = {
+                weight_threshold: 1,
+                account_auths: [],
+                key_auths: [[publicKeys.posting, 1]]
+            };
+            steem.api.setOptions({url: 'https://api.steemit.com'});
+            steem.broadcast.accountCreate(creatorKey, '3.000 STEEM', "<%= Settings.creator_account %>", username, owner, active, posting, publicKeys.memo, '', function(err, result) {
+                if (err) {
+                    $('#username').val(username);
+                    $('#password').val('Something went wrong. Please refresh the page to try again or contact support@steemcreate.com');
+                    cookieValue = 'a-1,b-0,c-' + username;
+                    cookies.set('steemcreate-info', cookieValue);
+                } else {
+                    $('#username').val(username);
+                    $('#password').val(password);
+                    const auths = steem.auth.getPrivateKeys(username, password, ['owner','active','posting','memo']);
+                    $('#owner_key').val(auths.owner);
+                    $('#active_key').val(auths.active);
+                    $('#posting_key').val(auths.posting);
+                    $('#memo_key').val(auths.memo);
+                    cookieValue = 'a-1,b-1,c-' + username + ',d-' + password;
+                    cookies.set('steemcreate-info', cookieValue);
+                }
             });
+
+            // client.broadcast.createAccount({username, password, creator: '<%= Settings.creator_account %>', fee: '3.000 STEEM'}, creatorKey).then(function(result) {
+            //     $('#username').val(username);
+            //     $('#password').val(password);
+            //     const auths = steem.auth.getPrivateKeys(username, password, ['owner','active','posting','memo']);
+            //     $('#owner_key').val(auths.owner);
+            //     $('#active_key').val(auths.active);
+            //     $('#posting_key').val(auths.posting);
+            //     $('#memo_key').val(auths.memo);
+            //     cookieValue = 'a-1,b-1,c-' + username + ',d-' + password;
+            //     cookies.set('steemcreate-info', cookieValue);
+            // }, function(error) {
+            //     $('#username').val(username);
+            //     $('#password').val('Something went wrong. Please refresh the page to try again or contact support@steemcreate.com');
+            //     cookieValue = 'a-1,b-0,c-' + username;
+            //     cookies.set('steemcreate-info', cookieValue);
+            // });
         } else if (orderPaid && username !== undefined && created === '1') {
             const username = steemcreateCookie.split(',')[2].split('+')[1];
             const password = steemcreateCookie.split(',')[3].split('+')[1];
