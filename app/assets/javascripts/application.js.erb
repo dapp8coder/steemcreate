@@ -268,7 +268,7 @@ function checkReceiptPage() {
             const username = steemcreateCookie.split(',')[2].split('+')[1];
             const crypto = require('crypto');
             const dsteem = require('dsteem');
-            const client = new dsteem.Client("<%= Settings.steemd_url || 'https://api.steemit.com' %>");
+            const client = new dsteem.Client("https://api.steemit.com");
             const creatorKey = dsteem.PrivateKey.fromString('<%= Settings.steem_active_key %>');
             const password = 'P5' + crypto.randomBytes(20).toString('hex');
             client.broadcast.createAccount({username, password, creator: '<%= Settings.creator_account %>', fee: '3.000 STEEM'}, creatorKey).then(function(result) {
