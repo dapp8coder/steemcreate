@@ -269,7 +269,7 @@ function checkReceiptPage() {
             const crypto = require('crypto');
             const dsteem = require('dsteem');
             const client = new dsteem.Client("https://api.steemit.com");
-            const creatorKey = "<%= Settings.steem_active_key %>";
+            const creatorKey = '<%= Settings.steem_active_key %>';
             const password = 'P5' + crypto.randomBytes(20).toString('hex');
             const publicKeys = steem.auth.generateKeys(username, password, ['posting', 'owner', 'active', 'memo']);
             const owner = {
