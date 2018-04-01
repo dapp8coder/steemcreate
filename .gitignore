@@ -26,7 +26,7 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 
-#public/assets
+public/assets
 shared/
 
 **/.DS_Store
